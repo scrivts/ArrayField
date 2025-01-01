@@ -1,6 +1,6 @@
 --[[
 
-ArrayField Interface Suite
+ScrivtsUI Interface Suite
 by Meta
 
 Original by Sirius
@@ -14,16 +14,16 @@ Arrays  | Designing + Programming + New Features
 
 local Release = "Release 2A"
 local NotificationDuration = 6.5
-local ArrayFieldFolder = "ArrayField"
-local ConfigurationFolder = ArrayFieldFolder.."/Configurations"
+local ScrivtsUIFolder = "ScrivtsUI"
+local ConfigurationFolder = ScrivtsUIFolder.."/Configurations"
 local ConfigurationExtension = ".rfld"
-local ArrayFieldQuality = {}
+local ScrivtsUIQuality = {}
 
-local ArrayFieldLibrary = {
+local ScrivtsUILibrary = {
 	Flags = {},
 	Theme = {
 		Default = {
-			TextFont = "Default", -- Default will use the various font faces used across ArrayField
+			TextFont = "Default", -- Default will use the various font faces used across ScrivtsUI
 			TextColor = Color3.fromRGB(240, 240, 240),
 
 			Background = Color3.fromRGB(25, 25, 25),
@@ -62,7 +62,7 @@ local ArrayFieldLibrary = {
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
 		},
 		Light = {
-			TextFont = "Gotham",  -- Default will use the various font faces used across ArrayField
+			TextFont = "Gotham",  -- Default will use the various font faces used across ScrivtsUI
 			TextColor = Color3.fromRGB(50, 50, 50), -- i need to make all text 240, 240, 240 and base gray on transparency not color to do this
 
 			Background = Color3.fromRGB(255, 255, 255),
@@ -116,18 +116,18 @@ local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = game:GetService('Players').LocalPlayer
 
 -- Interface Management
-local ArrayField = game:GetObjects("rbxassetid://13853811008")[1]
-ArrayField.Enabled = false
+local ScrivtsUI = game:GetObjects("rbxassetid://13853811008")[1]
+ScrivtsUI.Enabled = false
 local spawn = task.spawn
 local delay = task.delay
 
 --Studio
 if game["Run Service"]:IsStudio() then
-	function gethui() return ArrayField end local http_request = nil local syn = {protect_gui = false,request = false,}local http = nil function writefile(tt,t,ttt)end function isfolder(t)end function makefolder(t)end function isfile(r)end function readfile(t)end
+	function gethui() return ScrivtsUI end local http_request = nil local syn = {protect_gui = false,request = false,}local http = nil function writefile(tt,t,ttt)end function isfolder(t)end function makefolder(t)end function isfile(r)end function readfile(t)end
 end
 
 pcall(function()
-	_G.LastRayField.Name = 'Old Arrayfield'
+	_G.LastRayField.Name = 'Old ScrivtsUI'
 	_G.LastRayField.Enabled = false
 end)
 local ParentObject = function(Gui)
@@ -145,14 +145,14 @@ local ParentObject = function(Gui)
 	if not success and failure then
 		Gui.Parent = LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
 	end
-	_G.LastRayField = ArrayField
+	_G.LastRayField = ScrivtsUI
 end
-ParentObject(ArrayField)
+ParentObject(ScrivtsUI)
 
 --Object Variables
 
 local Camera = workspace.CurrentCamera
-local Main = ArrayField.Main
+local Main = ScrivtsUI.Main
 local Topbar = Main.Topbar
 local Elements = Main.Elements
 local LoadingFrame = Main.LoadingFrame
@@ -163,9 +163,9 @@ local SearchBar = Main.Searchbar
 local Filler = SearchBar.CanvasGroup.Filler
 local Prompt = Main.Prompt
 local NotePrompt = Main.NotePrompt
-local InfoPrompt = ArrayField.Info
+local InfoPrompt = ScrivtsUI.Info
 
-ArrayField.DisplayOrder = 100
+ScrivtsUI.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
 
 
@@ -182,13 +182,13 @@ local SideBarClosed = true
 local InfoPromptOpen = false
 local BarType = 'Side'
 local HoverTime = 0.3
-local Notifications = ArrayField.Notifications
+local Notifications = ScrivtsUI.Notifications
 
-local SelectedTheme = ArrayFieldLibrary.Theme.Default
+local SelectedTheme = ScrivtsUILibrary.Theme.Default
 
 function ChangeTheme(ThemeName)
-	SelectedTheme = ArrayField.Theme[ThemeName]
-	for _, obj in ipairs(ArrayField:GetDescendants()) do
+	SelectedTheme = ScrivtsUI.Theme[ThemeName]
+	for _, obj in ipairs(ScrivtsUI:GetDescendants()) do
 		if obj.ClassName == "TextLabel" or obj.ClassName == "TextBox" or obj.ClassName == "TextButton" then
 			if SelectedTheme.TextFont ~= "Default" then 
 				obj.TextColor3 = SelectedTheme.TextColor
@@ -197,14 +197,14 @@ function ChangeTheme(ThemeName)
 		end
 	end
 
-	ArrayField.Main.BackgroundColor3 = SelectedTheme.Background
-	ArrayField.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
-	ArrayField.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
-	ArrayField.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
+	ScrivtsUI.Main.BackgroundColor3 = SelectedTheme.Background
+	ScrivtsUI.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
+	ScrivtsUI.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
+	ScrivtsUI.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
 
-	ArrayField.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
-	ArrayField.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
-	ArrayField.Main.Topbar.Theme.ImageColor3 = SelectedTheme.TextColor
+	ScrivtsUI.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
+	ScrivtsUI.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
+	ScrivtsUI.Main.Topbar.Theme.ImageColor3 = SelectedTheme.TextColor
 
 	for _, TabPage in ipairs(Elements:GetChildren()) do
 		for _, Element in ipairs(TabPage:GetChildren()) do
@@ -331,16 +331,16 @@ end
 local function LoadConfiguration(Configuration)
 	local Data = HttpService:JSONDecode(Configuration)
 	for FlagName, FlagValue in next, Data do
-		if ArrayFieldLibrary.Flags[FlagName] then
+		if ScrivtsUILibrary.Flags[FlagName] then
 			spawn(function() 
-				if ArrayFieldLibrary.Flags[FlagName].Type == "ColorPicker" then
-					ArrayFieldLibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
+				if ScrivtsUILibrary.Flags[FlagName].Type == "ColorPicker" then
+					ScrivtsUILibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
 				else
-					if ArrayFieldLibrary.Flags[FlagName].CurrentValue or ArrayFieldLibrary.Flags[FlagName].CurrentKeybind or ArrayFieldLibrary.Flags[FlagName].CurrentOption or ArrayFieldLibrary.Flags[FlagName].Color ~= FlagValue then ArrayFieldLibrary.Flags[FlagName]:Set(FlagValue) end
+					if ScrivtsUILibrary.Flags[FlagName].CurrentValue or ScrivtsUILibrary.Flags[FlagName].CurrentKeybind or ScrivtsUILibrary.Flags[FlagName].CurrentOption or ScrivtsUILibrary.Flags[FlagName].Color ~= FlagValue then ScrivtsUILibrary.Flags[FlagName]:Set(FlagValue) end
 				end    
 			end)
 		else
-			ArrayFieldLibrary:Notify({Title = "Flag Error", Content = "ArrayField was unable to find '"..FlagName.. "'' in the current script"})
+			ScrivtsUILibrary:Notify({Title = "Flag Error", Content = "ScrivtsUI was unable to find '"..FlagName.. "'' in the current script"})
 		end
 	end
 end
@@ -348,7 +348,7 @@ end
 local function SaveConfiguration()
 	if not CEnabled then return end
 	local Data = {}
-	for i,v in pairs(ArrayFieldLibrary.Flags) do
+	for i,v in pairs(ScrivtsUILibrary.Flags) do
 		if v.Type == "ColorPicker" then
 			Data[i] = PackColor(v.Color)
 		else
@@ -668,7 +668,7 @@ function ClosePrompt()
 	wait(.5)
 	Prompt.Visible = false
 end
-function ArrayFieldLibrary:Notify(NotificationSettings)
+function ScrivtsUILibrary:Notify(NotificationSettings)
 	spawn(function()
 		local ActionCompleted = true
 		local Notification = Notifications.Template:Clone()
@@ -694,7 +694,7 @@ function ArrayFieldLibrary:Notify(NotificationSettings)
 				ActionCompleted = false
 				local NewAction = Notification.Actions.Template:Clone()
 				NewAction.BackgroundColor3 = SelectedTheme.NotificationActionsBackground
-				if SelectedTheme ~= ArrayFieldLibrary.Theme.Default then
+				if SelectedTheme ~= ScrivtsUILibrary.Theme.Default then
 					NewAction.TextColor3 = SelectedTheme.TextColor
 				end
 				NewAction.Name = Action.Name
@@ -708,7 +708,7 @@ function ArrayFieldLibrary:Notify(NotificationSettings)
 				NewAction.MouseButton1Click:Connect(function()
 					local Success, Response = pcall(Action.Callback)
 					if not Success then
-						print("ArrayField | Action: "..Action.Name.." Callback Error " ..tostring(Response))
+						print("ScrivtsUI | Action: "..Action.Name.." Callback Error " ..tostring(Response))
 					end
 					ActionCompleted = true
 				end)
@@ -757,7 +757,7 @@ function ArrayFieldLibrary:Notify(NotificationSettings)
 			end
 		end
 
-		if ArrayField.Name == "ArrayField" then
+		if ScrivtsUI.Name == "ScrivtsUI" then
 			neon:BindFrame(Notification.BlurModule, {
 				Transparency = 0.98;
 				BrickColor = BrickColor.new("Institutional white");
@@ -837,7 +837,7 @@ function Hide()
 		FadeDescription(nil,true)
 	end)
 	Debounce = true
-	ArrayFieldLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping RightShift", Duration = 7})
+	ScrivtsUILibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping RightShift", Duration = 7})
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 400)}):Play()
 	TweenService:Create(Main.Topbar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 45)}):Play()
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
@@ -1179,8 +1179,8 @@ function Minimise()
 	Debounce = false
 end
 
-function ArrayFieldLibrary:CreateWindow(Settings)
-	ArrayField.Enabled = false
+function ScrivtsUILibrary:CreateWindow(Settings)
+	ScrivtsUI.Enabled = false
 	local Passthrough = false
 	Topbar.Title.Text = Settings.Name
 	Main.Size = UDim2.new(0, 450, 0, 260)
@@ -1190,10 +1190,10 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 	LoadingFrame.Subtitle.TextTransparency = 1
 	Main.Shadow.Image.ImageTransparency = 1
 	LoadingFrame.Version.TextTransparency = 1
-	LoadingFrame.Title.Text = Settings.LoadingTitle or "Arrayfield Interface Suite"
+	LoadingFrame.Title.Text = Settings.LoadingTitle or "ScrivtsUI Interface Suite"
 	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta"
-	if Settings.LoadingTitle ~= "Arrayfield Interface Suite" then
-		LoadingFrame.Version.Text = "Arrayfield UI"
+	if Settings.LoadingTitle ~= "ScrivtsUI Interface Suite" then
+		LoadingFrame.Version.Text = "ScrivtsUI UI"
 	end
 	Topbar.Visible = false
 	Elements.Visible = false
@@ -1204,7 +1204,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 		if not Settings.ConfigurationSaving.FileName then
 			Settings.ConfigurationSaving.FileName = tostring(game.PlaceId)
 		end
-		if not isfolder(ArrayFieldLibrary.."/".."Configuration Folders") then
+		if not isfolder(ScrivtsUILibrary.."/".."Configuration Folders") then
 
 		end
 		if Settings.ConfigurationSaving.Enabled == nil then
@@ -1236,10 +1236,10 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 	end
 
 	if Settings.Discord then
-		if not isfolder(ArrayFieldFolder.."/Discord Invites") then
-			makefolder(ArrayFieldFolder.."/Discord Invites")
+		if not isfolder(ScrivtsUIFolder.."/Discord Invites") then
+			makefolder(ScrivtsUIFolder.."/Discord Invites")
 		end
-		if not isfile(ArrayFieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
+		if not isfile(ScrivtsUIFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
 			if request then
 				request({
 					Url = 'http://127.0.0.1:6463/rpc?v=1',
@@ -1257,7 +1257,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			end
 
 			if Settings.Discord.RememberJoins then -- We do logic this way so if the developer changes this setting, the user still won't be prompted, only new users
-				writefile(ArrayFieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"ArrayField RememberJoins is true for this invite, this invite will not ask you to join again")
+				writefile(ScrivtsUIFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"ScrivtsUI RememberJoins is true for this invite, this invite will not ask you to join again")
 			end
 		else
 
@@ -1270,8 +1270,8 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			return
 		end
 
-		if not isfolder(ArrayFieldFolder.."/Key System") then
-			makefolder(ArrayFieldFolder.."/Key System")
+		if not isfolder(ScrivtsUIFolder.."/Key System") then
+			makefolder(ScrivtsUIFolder.."/Key System")
 		end
 
 		if Settings.KeySettings.GrabKeyFromSite then
@@ -1281,7 +1281,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
 				end)
 				if not Success then
-					print("ArrayField | "..Key.." Error " ..tostring(Response))
+					print("ScrivtsUI | "..Key.." Error " ..tostring(Response))
 				end
 			end
 		end
@@ -1290,15 +1290,15 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			Settings.KeySettings.FileName = "No file name specified"
 		end
 
-		if isfile(ArrayFieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
-			if readfile(ArrayFieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) == Settings.KeySettings.Key then
+		if isfile(ScrivtsUIFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
+			if readfile(ScrivtsUIFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) == Settings.KeySettings.Key then
 				Passthrough = true
 			end
 		end
 
 		if not Passthrough then
 			local AttemptsRemaining = math.random(2,6)
-			ArrayField.Enabled = false
+			ScrivtsUI.Enabled = false
 			local KeyUI = game:GetObjects("rbxassetid://11695805160")[1]
 			KeyUI.Enabled = true
 			pcall(function()
@@ -1406,9 +1406,9 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					Passthrough = true
 					if Settings.KeySettings.SaveKey then
 						if writefile then
-							writefile(ArrayFieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, Settings.KeySettings.Key)
+							writefile(ScrivtsUIFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, Settings.KeySettings.Key)
 						end
-						ArrayFieldLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully"})
+						ScrivtsUILibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully"})
 					end
 				else
 					if AttemptsRemaining == 0 then
@@ -1470,7 +1470,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 				TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 				TweenService:Create(KeyMain.HideP, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 				wait(0.51)
-				ArrayFieldLibrary:Destroy()
+				ScrivtsUILibrary:Destroy()
 				KeyUI:Destroy()
 			end)
 		else
@@ -1480,7 +1480,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 	if Settings.KeySystem then
 		repeat wait() until Passthrough
 	end
-	ArrayField.Enabled = true
+	ScrivtsUI.Enabled = true
 	for _,tabbtn in pairs(SideList:GetChildren()) do
 		if tabbtn.ClassName == "Frame" and tabbtn.Name ~= "Placeholder" then
 			TweenService:Create(tabbtn.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint),{TextTransparency = 1}):Play()
@@ -1493,7 +1493,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 	--delay(4,function()
 	--	qNotePrompt({
 	--		Title = 'Preview',
-	--		Description = 'This is a preview for the official ArrayField forum post. Remember that things are subject to change.',
+	--		Description = 'This is a preview for the official ScrivtsUI forum post. Remember that things are subject to change.',
 
 	--	})
 	--end)
@@ -1535,8 +1535,8 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 
 	-- Tab
 	local FirstTab = false
-	ArrayFieldQuality.Window = {Tabs = {}}
-	local Window = ArrayFieldQuality.Window
+	ScrivtsUIQuality.Window = {Tabs = {}}
+	local Window = ScrivtsUIQuality.Window
 	function Window:CreateTab(Name,Image)
 		Window.Tabs[Name]={Elements = {}}
 		local Tab = Window.Tabs[Name]
@@ -1599,7 +1599,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			Elements.UIPageLayout.Animated = true
 		end
 
-		if SelectedTheme ~= ArrayFieldLibrary.Theme.Default then
+		if SelectedTheme ~= ScrivtsUILibrary.Theme.Default then
 			TopTabButton.Shadow.Visible = false
 		end
 		TopTabButton.UIStroke.Color = SelectedTheme.TabStroke
@@ -1712,7 +1712,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Button.Title.Text = "Callback Error"
-					print("ArrayField | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
+					print("ScrivtsUI | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Button.Title.Text = ButtonSettings.Name
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -1778,7 +1778,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 		function Tab:CreateSection(SectionName,Display)
 
 			local SectionValue = {
-				Holder = ArrayField.Holding,
+				Holder = ScrivtsUI.Holding,
 				Open = true
 			}
 			local Debounce = false
@@ -1805,7 +1805,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 				Section._UIPadding_:Destroy()
 				Section.Holder.Visible = false
 				Section.BackgroundTransparency = 1
-				SectionValue.Holder.Parent = ArrayField.Holding
+				SectionValue.Holder.Parent = ScrivtsUI.Holding
 				Section.Title.ImageButton.Visible = false
 			end
 			Section.Title.ImageButton.MouseButton1Down:Connect(function()
@@ -2035,7 +2035,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Input.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Input.Title.Text = "Callback Error"
-					print("ArrayField | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+					print("ScrivtsUI | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Input.Title.Text = InputSettings.Name
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2307,7 +2307,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					end)
 					if not Success then
 						Error('Callback Error')
-						print("ArrayField | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+						print("ScrivtsUI | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 					end
 
 					OptionInTable.Selected = true
@@ -2352,7 +2352,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 				end
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
-						ArrayFieldLibrary.Flags[DropdownSettings.Flag] = DropdownSettings
+						ScrivtsUILibrary.Flags[DropdownSettings.Flag] = DropdownSettings
 					end
 				end
 			end
@@ -2380,7 +2380,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Dropdown.Title.Text = "Callback Error"
-						print("ArrayField | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+						print("ScrivtsUI | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Dropdown.Title.Text = DropdownSettings.Name
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2559,7 +2559,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Keybind.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 							Keybind.Title.Text = "Callback Error"
-							print("ArrayField | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
+							print("ScrivtsUI | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Keybind.Title.Text = KeybindSettings.Name
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2618,7 +2618,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			end
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
-					ArrayFieldLibrary.Flags[KeybindSettings.Flag] = KeybindSettings
+					ScrivtsUILibrary.Flags[KeybindSettings.Flag] = KeybindSettings
 				end
 			end
 			return KeybindSettings
@@ -2647,7 +2647,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			else
 				Toggle.Parent = TabPage
 			end
-			if SelectedTheme ~= ArrayFieldLibrary.Theme.Default then
+			if SelectedTheme ~= ScrivtsUILibrary.Theme.Default then
 				Toggle.Switch.Shadow.Visible = false
 			end
 			ToggleSettings.Locked = false
@@ -2714,7 +2714,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("ArrayField | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("ScrivtsUI | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2760,7 +2760,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("ArrayField | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("ScrivtsUI | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2796,7 +2796,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
-					ArrayFieldLibrary.Flags[ToggleSettings.Flag] = ToggleSettings
+					ScrivtsUILibrary.Flags[ToggleSettings.Flag] = ToggleSettings
 				end
 			end
 
@@ -3033,7 +3033,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and ColorPickerSettings.Flag then
-					ArrayFieldLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
+					ScrivtsUILibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
 				end
 			end
 
@@ -3108,7 +3108,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			Slider.UIStroke.Transparency = 1
 			Slider.Title.TextTransparency = 1
 
-			if SelectedTheme ~= ArrayFieldLibrary.Theme.Default then
+			if SelectedTheme ~= ScrivtsUILibrary.Theme.Default then
 				Slider.Main.Shadow.Visible = false
 			end
 
@@ -3181,7 +3181,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 						TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Slider.Title.Text = "Callback Error"
-						print("ArrayField | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+						print("ScrivtsUI | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Slider.Title.Text = SliderSettings.Name
 						TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3218,7 +3218,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Slider.Title.Text = "Callback Error"
-					print("ArrayField | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+					print("ScrivtsUI | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Slider.Title.Text = SliderSettings.Name
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3254,7 +3254,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 			end
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
-					ArrayFieldLibrary.Flags[SliderSettings.Flag] = SliderSettings
+					ScrivtsUILibrary.Flags[SliderSettings.Flag] = SliderSettings
 				end
 			end
 			return SliderSettings
@@ -3329,7 +3329,7 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 						clicked = true
 						if not Success then
 							ClosePrompt()
-							print("ArrayField | "..info.Name.." Callback Error " ..tostring(Response))
+							print("ScrivtsUI | "..info.Name.." Callback Error " ..tostring(Response))
 						else
 							ClosePrompt()
 						end
@@ -3368,8 +3368,8 @@ function ArrayFieldLibrary:CreateWindow(Settings)
 end
 
 
-function ArrayFieldLibrary:Destroy()
-	ArrayField:Destroy()
+function ScrivtsUILibrary:Destroy()
+	ScrivtsUI:Destroy()
 end
 
 Topbar.ChangeSize.MouseButton1Click:Connect(function()
@@ -3454,15 +3454,15 @@ for _, TopbarButton in ipairs(Topbar:GetChildren()) do
 end
 
 
-function ArrayFieldLibrary:LoadConfiguration()
+function ScrivtsUILibrary:LoadConfiguration()
 	if CEnabled then
 		pcall(function()
 			if isfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension) then
 				LoadConfiguration(readfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension))
-				ArrayFieldLibrary:Notify({Title = "Configuration Loaded", Content = "The configuration file for this script has been loaded from a previous session"})
+				ScrivtsUILibrary:Notify({Title = "Configuration Loaded", Content = "The configuration file for this script has been loaded from a previous session"})
 			end
 		end)
 	end
 end
-task.delay(9, ArrayFieldLibrary.LoadConfiguration, ArrayFieldLibrary)
-return ArrayFieldLibrary
+task.delay(9, ScrivtsUILibrary.LoadConfiguration, ScrivtsUILibrary)
+return ScrivtsUILibrary
