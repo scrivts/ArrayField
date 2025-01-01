@@ -17,7 +17,7 @@ local Release = "Release 2A"
 local NotificationDuration = 6.5
 local ScrivtsUIFolder = "ScrivtsUI"
 local ConfigurationFolder = ScrivtsUIFolder.."/Configurations"
-local ConfigurationExtension = ".rfld"
+local ConfigurationExtension = ".sui"
 local ScrivtsUIQuality = {}
 
 local ScrivtsUILibrary = {
