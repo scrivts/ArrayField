@@ -1,9 +1,10 @@
 --[[
 
 ScrivtsUI Interface Suite
-by Meta
+by Scrivts
 
-Original by Sirius
+Original by Meta
+Original of the Original by Sirius
 
 -------------------------------
 Arrays  | Designing + Programming + New Features
