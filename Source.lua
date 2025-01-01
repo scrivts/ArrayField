@@ -1191,10 +1191,10 @@ function ScrivtsUILibrary:CreateWindow(Settings)
 	LoadingFrame.Subtitle.TextTransparency = 1
 	Main.Shadow.Image.ImageTransparency = 1
 	LoadingFrame.Version.TextTransparency = 1
-	LoadingFrame.Title.Text = Settings.LoadingTitle or "ScrivtsUI Interface Suite"
-	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius | Meta"
-	if Settings.LoadingTitle ~= "ScrivtsUI Interface Suite" then
-		LoadingFrame.Version.Text = "ScrivtsUI UI"
+	LoadingFrame.Title.Text = Settings.LoadingTitle or "ScrivtsUI"
+	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Scrivts | Sirius | Meta"
+	if Settings.LoadingTitle ~= "ScrivtsUI" then
+		LoadingFrame.Version.Text = "ScrivtsUI"
 	end
 	Topbar.Visible = false
 	Elements.Visible = false
